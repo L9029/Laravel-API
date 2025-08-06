@@ -45,4 +45,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Define la relación entre User y Post.
+     * Un usuario tiene muchos posts.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Post>
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
