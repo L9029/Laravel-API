@@ -27,4 +27,28 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Accesors
+
+    /**
+     * Obtiene un resumen del contenido del post.
+     * 
+     * @return string
+     */
+    public function getExcerptAttribute(): string
+    {
+        // Retorna los primeros 60 caracteres del contenido del post
+        return substr($this->content, 0, 60) . '...';
+    }
+
+    /**
+     * Obtiene la fecha de creación del post formateada.
+     * 
+     * @return string
+     */
+    public function getPublishedAtAttribute(): string
+    {
+        // Formatea la fecha de creación del post
+        return $this->created_at->format('d/m/Y');
+    }
 }

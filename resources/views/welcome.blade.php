@@ -19,15 +19,19 @@
             </style>
         @endif
     </head>
-    <body class="bg-white">
-        <div>
-            @forelse($posts as $post)
-                <div>
-                    <h2>{{ $post->title }}</h2>
-                </div>
-            @empty
-                <p class="px-4 py-2 text-center">No hay posts disponibles</p>
-            @endforelse
+    <body class="dark:bg-gray-800 dark:text-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-3 my-10">
+                @forelse($posts as $post)
+                    <div class="bg-gray-100 hover:bg-blue-200 border border-gray-200 p-5 rounded-lg mx-1 my-1">
+                        <h2 class="font-bold text-lg mb-4">{{ $post->title }}</h2>
+                        <p class="text-xs">{{ $post->excerpt }}</p>
+                        <p class="text-xs text-right">{{ $post->published_at }}</p>
+                    </div>
+                @empty
+                    <p class="px-4 py-2 text-center">No hay posts disponibles</p>
+                @endforelse
+            </div>
 
             <div>
                 {{ $posts->links() }}
