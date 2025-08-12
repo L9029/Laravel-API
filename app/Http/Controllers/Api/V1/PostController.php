@@ -23,14 +23,6 @@ class PostController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Retorna un post específico.
      * 
      * @param  \App\Models\Post  $post
@@ -39,14 +31,6 @@ class PostController extends Controller
     public function show(Post $post)
     {
         return new PostResource($post);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Post $post)
-    {
-        //
     }
 
     /**
