@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Http\Resources\V1\PostResource; // Recurso para formatear los datos de la respuesta
 
 class PostController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Retorna una lista de posts paginados.
+     * 
+     * @return \Illuminate\Http\JsonResponse // Respuesta en formato JSON
      */
     public function index()
     {
@@ -29,13 +32,14 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Retorna un post específico.
+     * 
+     * @param  \App\Models\Post  $post
+     * @return \App\Http\Resources\V1\PostResource // Recurso que formatea la respuesta del post
      */
     public function show(Post $post)
     {
-        return response()->json([
-            'post' => $post
-        ]);
+        return new PostResource($post);
     }
 
     /**
