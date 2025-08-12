@@ -16,11 +16,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(12);
+        $posts = Post::latest()->paginate(12);
 
-        return response()->json([
-            'posts' => $posts
-        ]);
+        // Retorna los posts paginados utilizando el recurso PostResource para formatear la respuesta
+        return PostResource::collection($posts);
     }
 
     /**

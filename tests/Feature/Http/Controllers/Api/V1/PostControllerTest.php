@@ -24,22 +24,33 @@ class PostControllerTest extends TestCase
         // Realiza la solicitud GET a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación y los datos correctos
         $this->getJson('/api/v1/posts')
             ->assertStatus(200)
-            ->assertJsonCount(3, 'posts.data')
+            ->assertJsonCount(3, 'data')
             ->assertJsonStructure([
-                'posts' => [
+                'data' => [
+                    '*' => [
+                        'id',
+                        'title',
+                        'slug',
+                        'excerpt',
+                        'content',
+                        'published_at',
+                        'user_id',
+                    ]
+                ],
+                'links' => [
+                    'first',
+                    'last',
+                    'prev',
+                    'next'
+                ],
+                'meta' => [
                     'current_page',
-                    'data',
-                    'first_page_url',
                     'from',
                     'last_page',
-                    'last_page_url',
-                    'links',
-                    'next_page_url',
                     'path',
                     'per_page',
-                    'prev_page_url',
                     'to',
-                    'total',
+                    'total'
                 ]
             ]);
     }
@@ -54,22 +65,23 @@ class PostControllerTest extends TestCase
         // Realiza la solicitud GET a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación pero sin datos
         $this->getJson('/api/v1/posts')
             ->assertStatus(200)
-            ->assertJsonCount(0, 'posts.data')
+            ->assertJsonCount(0, 'data')
             ->assertJsonStructure([
-                'posts' => [
+                'data' => [],
+                'links' => [
+                    'first',
+                    'last',
+                    'prev',
+                    'next'
+                ],
+                'meta' => [
                     'current_page',
-                    'data',
-                    'first_page_url',
                     'from',
                     'last_page',
-                    'last_page_url',
-                    'links',
-                    'next_page_url',
                     'path',
                     'per_page',
-                    'prev_page_url',
                     'to',
-                    'total',
+                    'total'
                 ]
             ]);
     }
