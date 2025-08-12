@@ -21,10 +21,27 @@ class PostControllerTest extends TestCase
 
         Post::factory()->count(3)->create();
 
-        // Realiza la solicitud GET a la ruta del índice de posts y verifica la respuesta
+        // Realiza la solicitud GET a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación y los datos correctos
         $this->getJson('/api/v1/posts')
             ->assertStatus(200)
-            ->assertJsonCount(3, 'posts');
+            ->assertJsonCount(3, 'posts.data')
+            ->assertJsonStructure([
+                'posts' => [
+                    'current_page',
+                    'data',
+                    'first_page_url',
+                    'from',
+                    'last_page',
+                    'last_page_url',
+                    'links',
+                    'next_page_url',
+                    'path',
+                    'per_page',
+                    'prev_page_url',
+                    'to',
+                    'total',
+                ]
+            ]);
     }
 
     /**
@@ -34,10 +51,27 @@ class PostControllerTest extends TestCase
      */
     public function test_api_index_returns_empty_when_no_posts() : void {
 
-        // Realiza la solicitud GET a la ruta del índice de posts y verifica la respuesta
+        // Realiza la solicitud GET a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación pero sin datos
         $this->getJson('/api/v1/posts')
             ->assertStatus(200)
-            ->assertJsonCount(0, 'posts');
+            ->assertJsonCount(0, 'posts.data')
+            ->assertJsonStructure([
+                'posts' => [
+                    'current_page',
+                    'data',
+                    'first_page_url',
+                    'from',
+                    'last_page',
+                    'last_page_url',
+                    'links',
+                    'next_page_url',
+                    'path',
+                    'per_page',
+                    'prev_page_url',
+                    'to',
+                    'total',
+                ]
+            ]);
     }
 
     /**
