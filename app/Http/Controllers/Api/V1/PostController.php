@@ -12,7 +12,7 @@ class PostController extends Controller
     /**
      * Retorna una lista de posts paginados.
      * 
-     * @return \Illuminate\Http\JsonResponse // Respuesta en formato JSON
+     * @return \App\Http\Resources\V1\PostResource[] // Colección de recursos que formatean la respuesta de los posts
      */
     public function index()
     {
@@ -50,10 +50,15 @@ class PostController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un post específico.
+     * 
+     * @param  \App\Models\Post  $post
+     * @return void
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return response()->json(null, 204); // Respuesta vacía con código de estado 204 No Content
     }
 }
