@@ -14,6 +14,7 @@ Route::get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
     Route::apiResource('posts', PostControllerV1::class)
     ->only(['index', 'show', 'destroy'])
+    ->names('posts.v1')
     ->middleware('auth:sanctum');
 });
 
@@ -21,8 +22,9 @@ Route::prefix('v1')->group(function () {
 Route::prefix('v2')->group(function () {
     Route::apiResource('posts', PostControllerV2::class)
     ->only(['index', 'show'])
+    ->names('posts.v2')
     ->middleware('auth:sanctum');
 });
 
 // Api Login
-Route::post("login", [LoginController::class, 'login']);
+Route::post("login", [LoginController::class, 'login'])->name("login");
