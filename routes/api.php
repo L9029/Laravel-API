@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\PostController as PostControllerV1;
 use App\Http\Controllers\Api\V2\PostController as PostControllerV2;
+use App\Http\Controllers\Api\LoginController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -22,3 +23,6 @@ Route::prefix('v2')->group(function () {
     ->only(['index', 'show'])
     ->middleware('auth:sanctum');
 });
+
+// Api Login
+Route::post("login", [LoginController::class, 'login']);
