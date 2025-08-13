@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Post;
+use App\Models\User;
 
 class PostControllerTest extends TestCase
 {
@@ -18,10 +19,14 @@ class PostControllerTest extends TestCase
      */
     public function test_api_index_returns_posts() : void  {
 
+        // Se crea un usuario
+        $user = User::factory()->create();
+        
         Post::factory()->count(3)->create();
 
-        // Realiza la solicitud GET a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación y los datos correctos
-        $this->getJson('/api/v2/posts')
+        // Realiza la solicitud GET actuando como un usuario autenticado a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación y los datos correctos
+        $this->actingAs($user, "sanctum")
+            ->getJson('/api/v2/posts')
             ->assertStatus(200)
             ->assertJsonCount(3, 'data')
             ->assertJsonStructure([
@@ -64,8 +69,12 @@ class PostControllerTest extends TestCase
      */
     public function test_api_index_returns_empty_when_no_posts() : void {
 
-        // Realiza la solicitud GET a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación y sin datos
-        $this->getJson('/api/v2/posts')
+        // Se crea un usuario
+        $user = User::factory()->create();
+
+        // Realiza la solicitud GET actuando como un usuario autenticado a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación y sin datos
+        $this->actingAs($user, "sanctum")
+            ->getJson('/api/v2/posts')
             ->assertStatus(200)
             ->assertJsonCount(0, 'data')
             ->assertJsonStructure([
@@ -95,10 +104,14 @@ class PostControllerTest extends TestCase
      */
     public function test_api_show_returns_post() : void {
 
+        // Se crea un usuario
+        $user = User::factory()->create();
+
         $post = Post::factory()->create();
 
-        // Realiza la solicitud GET a la ruta del post específico y verifica que la respuesta venga en formato JSON con los datos correctos
-        $this->getJson('/api/v2/posts/' . $post->id)
+        // Realiza la solicitud GET actuando como un usuario autenticado a la ruta del post específico y verifica que la respuesta venga en formato JSON con los datos correctos
+        $this->actingAs($user, "sanctum")
+            ->getJson('/api/v2/posts/' . $post->id)
             ->assertStatus(200)
             ->assertJson([
                 'data' => [

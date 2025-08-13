@@ -12,11 +12,13 @@ Route::get('/user', function (Request $request) {
 // Rutas de la API versión 1
 Route::prefix('v1')->group(function () {
     Route::apiResource('posts', PostControllerV1::class)
-    ->only(['index', 'show', 'destroy']);
+    ->only(['index', 'show', 'destroy'])
+    ->middleware('auth:sanctum');
 });
 
 // Rutas de la API versión 2
 Route::prefix('v2')->group(function () {
     Route::apiResource('posts', PostControllerV2::class)
-    ->only(['index', 'show']);
+    ->only(['index', 'show'])
+    ->middleware('auth:sanctum');
 });

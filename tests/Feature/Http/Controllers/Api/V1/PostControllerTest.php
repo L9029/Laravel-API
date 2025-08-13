@@ -19,10 +19,14 @@ class PostControllerTest extends TestCase
      */
     public function test_api_index_returns_posts() : void {
 
+        // Se crea un usuario
+        $user = User::factory()->create();
+
         Post::factory()->count(3)->create();
 
-        // Realiza la solicitud GET a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación y los datos correctos
-        $this->getJson('/api/v1/posts')
+        // Realiza la solicitud GET actuando como un usuario autenticado a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación y los datos correctos
+        $this->actingAs($user, "sanctum")
+            ->getJson('/api/v1/posts')
             ->assertStatus(200)
             ->assertJsonCount(3, 'data')
             ->assertJsonStructure([
@@ -62,8 +66,12 @@ class PostControllerTest extends TestCase
      */
     public function test_api_index_returns_empty_when_no_posts() : void {
 
-        // Realiza la solicitud GET a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación pero sin datos
-        $this->getJson('/api/v1/posts')
+        // Se crea un usuario
+        $user = User::factory()->create();
+
+        // Realiza la solicitud GET actuando como un usuario autenticado a la ruta del índice de posts y verifica que la respuesta venga en formato JSON con paginación pero sin datos
+        $this->actingAs($user, "sanctum")
+            ->getJson('/api/v1/posts')
             ->assertStatus(200)
             ->assertJsonCount(0, 'data')
             ->assertJsonStructure([
@@ -123,11 +131,15 @@ class PostControllerTest extends TestCase
      */
     public function test_api_show() : void {
         
+        // Se crea un usuario
+        $user = User::factory()->create();
+
         // Crea un post para probar
         $post = Post::factory()->create();
 
-        // Realiza la solicitud GET a la ruta de un post específico y verifica la respuesta
-        $this->getJson('/api/v1/posts/' . $post->id)
+        // Realiza la solicitud GET actuando como un usuario autenticado a la ruta de un post específico y verifica la respuesta
+        $this->actingAs($user, "sanctum")
+            ->getJson('/api/v1/posts/' . $post->id)
             ->assertStatus(200)
             ->assertJsonFragment([
                 'id' => $post->id,
@@ -178,11 +190,15 @@ class PostControllerTest extends TestCase
      */
     public function test_api_destroy() : void {
 
+        // Se crea un usuario
+        $user = User::factory()->create();
+
         // Se crea un post para eliminar
         $post = Post::factory()->create();
 
         // Realiza la solicitud DELETE a la ruta de eliminación del post y verifica la respuesta
-        $this->deleteJson("/api/v1/posts/{$post->id}")
+        $this->actingAs($user, "sanctum")
+            ->deleteJson("/api/v1/posts/{$post->id}")
             ->assertStatus(204);
 
         // Verifica que el post se haya eliminado de la base de datos
