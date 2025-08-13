@@ -28,12 +28,15 @@ class PostControllerTest extends TestCase
                 'data' => [
                     '*' => [
                         'id',
-                        'title',
+                        'post_name',
                         'slug',
                         'excerpt',
                         'content',
                         'published_at',
-                        'user_id',
+                        'user' => [
+                            'name',
+                            'email'
+                        ]
                     ]
                 ],
                 'links' => [
@@ -101,7 +104,10 @@ class PostControllerTest extends TestCase
                 'data' => [
                     'id' => $post->id,
                     'slug' => $post->slug,
-                    'user_id' => $post->user_id,
+                    'user' => [
+                        'name' => $post->user->name,
+                        'email' => $post->user->email
+                    ]
                 ]
             ]);
     }
