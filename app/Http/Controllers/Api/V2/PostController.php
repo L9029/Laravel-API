@@ -11,18 +11,25 @@ use App\Http\Resources\V2\PostCollection; // Colección de recursos para formate
 class PostController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Retorna una lista de posts paginados.
+     * 
+     * @return \App\Http\Resources\V2\PostCollection // Colección de recursos de los posts
      */
     public function index()
     {
-        //
+        $posts = Post::latest()->paginate(12); // Obtener los posts más recientes con paginación
+
+        return new PostCollection($posts); // Devolver la colección de recursos
     }
 
     /**
-     * Display the specified resource.
+     * Retorna un post específico.
+     * 
+     * @param  \App\Models\Post  $post
+     * @return \App\Http\Resources\V2\PostResource // Recurso que formatea la respuesta del post
      */
     public function show(Post $post)
     {
-        //
+        return new PostResource($post);
     }
 }
